@@ -91,9 +91,7 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-# Custom user model — must be set before the first migration (Step 1).
-# Placeholder until Step 1 lands the model; Django requires AUTH_USER_MODEL
-# to point at an installed app's model. Step 1 replaces the stub.
+# Custom user model — set before the first migration.
 AUTH_USER_MODEL = "users.User"
 
 REST_FRAMEWORK = {

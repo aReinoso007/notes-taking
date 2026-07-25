@@ -303,11 +303,11 @@ notes-taking/                   # monorepo root (this folder)
 
 ### Progress
 
-- [x] Step 0 — monorepo, Compose, CI, split settings (custom User stub + initial migration included so AUTH_USER_MODEL boots; Step 1 adds model tests)
-- [ ] Step 1
-- [ ] Step 2
-- [ ] Step 3
-- [ ] Step 4
+- [x] Step 0 — monorepo, Compose, CI, split settings
+- [x] Step 1 — custom User model + model tests
+- [x] Step 2 — Category + Note models, managers, `preview_text`, palette
+- [x] Step 3 — DRF signup/login/refresh/logout + seeding
+- [x] Step 4 — Categories + Notes API, permissions, pagination, annotated counts
 - [ ] Step 5
 - [ ] Step 6
 - [ ] Step 7
