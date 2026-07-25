@@ -34,7 +34,14 @@ export function NotesPage() {
     router.refresh();
   }
 
-  if (me.isLoading || categories.isLoading || notes.isLoading) {
+  // Only block the whole page on the true first paint — never when switching
+  // categories (those keep previous notes via keepPreviousData).
+  const booting =
+    (me.isLoading && !me.data) ||
+    (categories.isLoading && !categories.data) ||
+    (notes.isLoading && !notes.data);
+
+  if (booting) {
     return <div className={styles.loading}>Loading notes…</div>;
   }
 

@@ -2,9 +2,9 @@
 
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import Markdown from "react-markdown";
 
 import { CategoryPicker } from "@/components/notes/CategoryPicker";
+import { MarkdownBodyField } from "@/components/notes/MarkdownBodyField";
 import { formatLastEdited } from "@/lib/dates";
 import {
   buildNotePayload,
@@ -235,33 +235,20 @@ export function NoteEditor({
         <label className="visually-hidden" htmlFor="note-title">
           Note title
         </label>
-        <input
+        <textarea
           id="note-title"
           className={styles.title}
           value={title}
           placeholder="Note Title"
+          rows={2}
           onChange={(e) => void onFieldsChange(e.target.value, content)}
         />
 
-        <label className="visually-hidden" htmlFor="note-content">
-          Note content
-        </label>
-        <textarea
-          id="note-content"
-          className={styles.content}
+        <MarkdownBodyField
           value={content}
+          onChange={(next) => void onFieldsChange(title, next)}
           placeholder="Pour your heart out..."
-          rows={10}
-          onChange={(e) => void onFieldsChange(title, e.target.value)}
         />
-
-        <section className={styles.preview} aria-label="Markdown preview">
-          {content.trim() ? (
-            <Markdown>{content}</Markdown>
-          ) : (
-            <p className={styles.previewEmpty}>Preview appears as you write.</p>
-          )}
-        </section>
 
         {saveError ? (
           <p className={styles.error} role="alert">

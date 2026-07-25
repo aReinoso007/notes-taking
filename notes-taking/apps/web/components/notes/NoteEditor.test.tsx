@@ -14,12 +14,6 @@ vi.mock("next/navigation", () => ({
   useRouter: () => ({ replace, push, refresh: vi.fn() }),
 }));
 
-vi.mock("react-markdown", () => ({
-  default: ({ children }: { children: string }) => (
-    <div data-testid="markdown-preview">{children}</div>
-  ),
-}));
-
 const createNote = vi.fn();
 const updateNote = vi.fn();
 const deleteNote = vi.fn();

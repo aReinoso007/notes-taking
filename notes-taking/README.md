@@ -16,7 +16,7 @@ that a reviewer can boot with one Compose command.
 | Web | Next.js App Router + TypeScript (`apps/web`) |
 | DB | Postgres 16 via Docker Compose |
 | Auth transport | httpOnly cookies; Next.js Route Handlers as a BFF (browser never talks to Django directly) |
-| Editor | Markdown textarea + `react-markdown` preview |
+| Editor | Live markdown body (stored as raw markdown) |
 
 ---
 
@@ -118,9 +118,9 @@ CI runs both suites on every push/PR (`.github/workflows/ci.yml`).
    filters by category; empty state with the boba illustration.
 3. **New note** — `/notes/new` creates **nothing** until the first keystroke,
    then `POST`s and `replace`s to `/notes/{id}`.
-4. **Editor** — inline title/body, ~500ms debounced autosave, optimistic
-   “Last Edited”, markdown preview, category picker (including inline create),
-   delete with confirmation.
+4. **Editor** — inline title + live markdown body (type `*` or `-` then space
+   for a bullet), ~500ms debounced autosave, optimistic “Last Edited”,
+   category picker (including inline create), delete with confirmation.
 
 ---
 

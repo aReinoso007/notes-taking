@@ -1,6 +1,11 @@
 "use client";
 
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  keepPreviousData,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
 
 import { api } from "./api-client";
 import type { Note } from "./types";
@@ -33,6 +38,9 @@ export function useNotes(category?: number | "null") {
     queryKey: queryKeys.notes(category),
     queryFn: () =>
       api.listNotes(category !== undefined ? { category } : undefined),
+    // Keep the previous grid on screen while the next category loads —
+    // avoids a full-page "Loading notes…" flash / layout jump.
+    placeholderData: keepPreviousData,
   });
 }
 
