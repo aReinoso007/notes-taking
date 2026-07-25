@@ -309,7 +309,7 @@ notes-taking/                   # monorepo root (this folder)
 - [x] Step 3 — DRF signup/login/refresh/logout + seeding
 - [x] Step 4 — Categories + Notes API, permissions, pagination, annotated counts
 - [x] Step 5 — Next BFF proxy, httpOnly cookies, typed client, TanStack Query
-- [ ] Step 6
+- [x] Step 6 — Auth screens (`AuthLayout`, pill button, errors, reveal toggle)
 - [ ] Step 7
 - [ ] Step 8
 - [ ] Step 9

@@ -1,0 +1,56 @@
+.page {
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1rem;
+  background: var(--paper);
+}
+
+.column {
+  width: min(100%, 383px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.illustrationSlot {
+  /* Fixed to the larger signup art so login↔signup doesn't jump. */
+  width: 189px;
+  height: 134px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.illustration {
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.heading {
+  margin: 45px 0 0;
+  color: var(--heading);
+  font-family: var(--font-display), "Sniglet", cursive;
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  font-weight: 400;
+  line-height: 1.15;
+  text-align: center;
+}
+
+.footer {
+  margin-top: 16px;
+  color: var(--ink);
+  font-size: 0.95rem;
+  text-align: center;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.footer:hover {
+  color: var(--heading);
+}
