@@ -2,11 +2,17 @@ from __future__ import annotations
 
 from django.conf import settings
 from django.db import models
-from django.db.models import Count
+from django.db.models import Case, Count, IntegerField, Value, When
 
 
 CATEGORY_PALETTE = ("#EF9C66", "#FCDC94", "#C8CFA0", "#78ABA8")
-SEED_CATEGORY_NAMES = ("Random Thoughts", "School", "Personal", "Drama")
+SEED_CATEGORY_NAMES = ("Random Thoughts", "School", "Personal")
+# Fixed colours for signup-seeded categories (palette still used for later creates).
+SEED_CATEGORY_COLORS = {
+    "Random Thoughts": "#EF9C66",
+    "School": "#FCDC94",
+    "Personal": "#78ABA8",
+}
 
 
 class CategoryQuerySet(models.QuerySet):
@@ -15,6 +21,20 @@ class CategoryQuerySet(models.QuerySet):
 
     def with_note_counts(self):
         return self.annotate(note_count=Count("notes", distinct=True))
+
+    def in_display_order(self):
+        """Random Thoughts → School → Personal, then any others by created_at."""
+        whens = [
+            When(name=name, then=Value(index))
+            for index, name in enumerate(SEED_CATEGORY_NAMES)
+        ]
+        return self.annotate(
+            _display_order=Case(
+                *whens,
+                default=Value(len(SEED_CATEGORY_NAMES)),
+                output_field=IntegerField(),
+            )
+        ).order_by("_display_order", "created_at", "id")
 
 
 class CategoryManager(models.Manager):

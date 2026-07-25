@@ -20,5 +20,5 @@ class CategoryViewSet(
         return (
             Category.objects.for_user(self.request.user)
             .with_note_counts()
-            .order_by("created_at")
+            .in_display_order()
         )

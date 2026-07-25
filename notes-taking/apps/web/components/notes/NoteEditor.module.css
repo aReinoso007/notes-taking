@@ -82,15 +82,15 @@
   border: 0;
   background: transparent;
   color: var(--heading);
-  font-family: var(--font-display), "Sniglet", cursive;
-  font-size: clamp(1.85rem, 3.2vw, 2.55rem);
-  font-weight: 400;
-  line-height: 1.2;
+  font-family: var(--font-note-title), "Inria Serif", serif;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1.25;
   outline: none;
   resize: none;
   overflow: hidden;
   field-sizing: content;
-  min-height: 2.6em;
+  min-height: 1.5em;
 }
 
 .title::placeholder {

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Nunito, Sniglet } from "next/font/google";
+import { Inter, Inria_Serif, Nunito, Sniglet } from "next/font/google";
 
 import { QueryProvider } from "@/lib/providers";
 
@@ -11,6 +11,18 @@ const display = Sniglet({
   variable: "--font-display",
 });
 
+const noteTitle = Inria_Serif({
+  weight: "700",
+  subsets: ["latin"],
+  variable: "--font-note-title",
+});
+
+const noteBody = Inter({
+  weight: "400",
+  subsets: ["latin"],
+  variable: "--font-note-body",
+});
+
 const ui = Nunito({
   subsets: ["latin"],
   variable: "--font-ui",
@@ -19,6 +31,10 @@ const ui = Nunito({
 export const metadata: Metadata = {
   title: "Notes",
   description: "A cute notes-taking app",
+  icons: {
+    icon: [{ url: "/favicon.png", type: "image/png" }],
+    apple: [{ url: "/apple-icon.png", type: "image/png" }],
+  },
 };
 
 export default function RootLayout({
@@ -27,7 +43,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${display.variable} ${ui.variable}`}>
+    <html
+      lang="en"
+      className={`${display.variable} ${noteTitle.variable} ${noteBody.variable} ${ui.variable}`}
+    >
       <body>
         <QueryProvider>{children}</QueryProvider>
       </body>

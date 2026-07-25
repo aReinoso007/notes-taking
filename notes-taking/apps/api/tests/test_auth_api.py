@@ -36,13 +36,13 @@ class TestAuthAPI:
         )
         assert response.status_code == 201
         user = User.objects.get(email="seed@example.com")
-        cats = list(Category.objects.for_user(user))
-        assert len(cats) == 3
-        names = {c.name for c in cats}
-        colors = {c.color for c in cats}
-        assert len(names) == 3
-        assert len(colors) == 3
-        assert colors.issubset(set(CATEGORY_PALETTE))
+        cats = {c.name: c.color for c in Category.objects.for_user(user)}
+        assert cats == {
+            "Random Thoughts": "#EF9C66",
+            "School": "#FCDC94",
+            "Personal": "#78ABA8",
+        }
+        assert set(cats.values()).issubset(set(CATEGORY_PALETTE))
 
     def test_signup_duplicate_email(self, api_client, user_a):
         response = api_client.post(

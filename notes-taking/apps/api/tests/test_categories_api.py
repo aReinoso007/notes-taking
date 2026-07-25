@@ -30,6 +30,16 @@ class TestCategoriesAPI:
         names = [c["name"] for c in auth_client_a.get(URL).json()]
         assert names == ["Mine"]
 
+    def test_list_orders_seed_categories_first(self, auth_client_a, user_a):
+        Category.objects.create(user=user_a, name="Personal", color="#78ABA8")
+        Category.objects.create(user=user_a, name="School", color="#FCDC94")
+        Category.objects.create(user=user_a, name="Random Thoughts", color="#EF9C66")
+        Category.objects.create(user=user_a, name="Extra", color="#C8CFA0")
+
+        names = [c["name"] for c in auth_client_a.get(URL).json()]
+        assert names[:3] == ["Random Thoughts", "School", "Personal"]
+        assert names[-1] == "Extra"
+
     def test_create_assigns_least_used_color(self, auth_client_a, user_a):
         Category.objects.create(user=user_a, name="One", color="#EF9C66")
         Category.objects.create(user=user_a, name="Two", color="#FCDC94")

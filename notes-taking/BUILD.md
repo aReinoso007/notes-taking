@@ -107,7 +107,12 @@ class User(AbstractBaseUser, PermissionsMixin):
 ```python
 # apps/api/categories/models.py
 CATEGORY_PALETTE = ("#EF9C66", "#FCDC94", "#C8CFA0", "#78ABA8")
-SEED_CATEGORY_NAMES = ("Random Thoughts", "School", "Personal", "Drama")
+SEED_CATEGORY_NAMES = ("Random Thoughts", "School", "Personal")
+SEED_CATEGORY_COLORS = {
+    "Random Thoughts": "#EF9C66",
+    "School": "#FCDC94",
+    "Personal": "#78ABA8",
+}
 
 class Category(models.Model):
     user       = FK(User, on_delete=CASCADE, related_name="categories")
@@ -144,9 +149,9 @@ class Note(models.Model):
 
 ### Colour assignment
 
-Signup seeds **3 categories**: `random.sample(SEED_CATEGORY_NAMES, 3)` paired
-with 3 distinct colours from `CATEGORY_PALETTE`. Later categories assign
-**least-used colour first**. Seeding must be atomic with user creation.
+Signup seeds **3 categories** — Random Thoughts / School / Personal — with
+fixed colours (`SEED_CATEGORY_COLORS`). Later categories assign **least-used
+colour first** from `CATEGORY_PALETTE`. Seeding must be atomic with user creation.
 
 ---
 
