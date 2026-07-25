@@ -310,7 +310,7 @@ notes-taking/                   # monorepo root (this folder)
 - [x] Step 4 — Categories + Notes API, permissions, pagination, annotated counts
 - [x] Step 5 — Next BFF proxy, httpOnly cookies, typed client, TanStack Query
 - [x] Step 6 — Auth screens (`AuthLayout`, pill button, errors, reveal toggle)
-- [ ] Step 7
+- [x] Step 7 — Notes grid, cards, sidebar, category filter, empty states
 - [ ] Step 8
 - [ ] Step 9
 
