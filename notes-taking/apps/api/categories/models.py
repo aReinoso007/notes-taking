@@ -5,7 +5,16 @@ from django.db import models
 from django.db.models import Case, Count, IntegerField, Value, When
 
 
-CATEGORY_PALETTE = ("#EF9C66", "#FCDC94", "#C8CFA0", "#78ABA8")
+CATEGORY_PALETTE = (
+    "#EF9C66",  # apricot
+    "#FCDC94",  # butter
+    "#C8CFA0",  # sage
+    "#78ABA8",  # teal
+    "#E8B4B8",  # rose
+    "#D4B483",  # caramel
+    "#9DBFBB",  # mist
+    "#E9C46A",  # gold
+)
 SEED_CATEGORY_NAMES = ("Random Thoughts", "School", "Personal")
 # Fixed colours for signup-seeded categories (palette still used for later creates).
 SEED_CATEGORY_COLORS = {

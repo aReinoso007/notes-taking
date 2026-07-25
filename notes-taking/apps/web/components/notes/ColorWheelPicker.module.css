@@ -1,0 +1,89 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.35rem 0 0.15rem;
+}
+
+.wheelWrap {
+  position: relative;
+  width: 168px;
+  height: 168px;
+  touch-action: none;
+}
+
+.wheel {
+  display: block;
+  width: 168px;
+  height: 168px;
+  border-radius: 999px;
+  cursor: crosshair;
+  touch-action: none;
+}
+
+.wheelMarker {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  margin: -8px 0 0 -8px;
+  border-radius: 999px;
+  border: 2px solid #fff;
+  box-shadow: 0 0 0 1px #1a1a1a, 0 1px 2px rgb(0 0 0 / 0.35);
+  pointer-events: none;
+}
+
+.valueTrack {
+  position: relative;
+  width: 168px;
+  height: 14px;
+  border-radius: 999px;
+  cursor: pointer;
+  touch-action: none;
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--ink) 35%, transparent);
+}
+
+.valueMarker {
+  position: absolute;
+  top: 50%;
+  width: 16px;
+  height: 16px;
+  margin: -8px 0 0 -8px;
+  border-radius: 999px;
+  border: 2px solid #fff;
+  box-shadow: 0 0 0 1px #1a1a1a, 0 1px 2px rgb(0 0 0 / 0.35);
+  pointer-events: none;
+}
+
+.swatchRow {
+  display: grid;
+  grid-template-columns: 28px 1fr;
+  gap: 0.45rem;
+  align-items: center;
+  width: 168px;
+}
+
+.preview {
+  width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  border: var(--border-hair) solid color-mix(in srgb, var(--ink) 40%, transparent);
+}
+
+.hexInput {
+  width: 100%;
+  height: 32px;
+  padding: 0 0.5rem;
+  border: var(--border-hair) solid var(--ink);
+  border-radius: var(--r-input);
+  background: transparent;
+  color: var(--ink);
+  font: inherit;
+  font-size: 0.85rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.hexInput:focus {
+  outline: none;
+  border-color: var(--heading);
+}

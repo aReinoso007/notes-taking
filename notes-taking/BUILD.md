@@ -28,17 +28,23 @@ Do not reopen locked decisions during scaffolding.
 
 ## 2. Design tokens
 
-### Category palette — exactly four colours
+### Category palette
 
 ```
 #EF9C66  apricot
 #FCDC94  butter
 #C8CFA0  sage
 #78ABA8  teal
+#E8B4B8  rose
+#D4B483  caramel
+#9DBFBB  mist
+#E9C46A  gold
 ```
 
-These are **category colours**, not a brand accent palette. Colour is a property
-of `Category`; a `Note` has no colour of its own and renders its category's.
+These are **suggested** category colours (signup seeds + quick picks). Users may
+pick **any `#RRGGBB` hex** when creating a category. Colour is a property of
+`Category`; a `Note` has no colour of its own and renders its category's.
+Never use `#9747FF` (Figma slice annotation).
 
 ### Surface, ink, heading
 
@@ -106,7 +112,10 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 ```python
 # apps/api/categories/models.py
-CATEGORY_PALETTE = ("#EF9C66", "#FCDC94", "#C8CFA0", "#78ABA8")
+CATEGORY_PALETTE = (
+    "#EF9C66", "#FCDC94", "#C8CFA0", "#78ABA8",
+    "#E8B4B8", "#D4B483", "#9DBFBB", "#E9C46A",
+)
 SEED_CATEGORY_NAMES = ("Random Thoughts", "School", "Personal")
 SEED_CATEGORY_COLORS = {
     "Random Thoughts": "#EF9C66",
@@ -117,7 +126,7 @@ SEED_CATEGORY_COLORS = {
 class Category(models.Model):
     user       = FK(User, on_delete=CASCADE, related_name="categories")
     name       = CharField(max_length=60)
-    color      = CharField(max_length=7)   # hex from CATEGORY_PALETTE
+    color      = CharField(max_length=7)   # #RRGGBB (any hex; seeds use palette)
     created_at = DateTimeField(auto_now_add=True)
 
     class Meta:

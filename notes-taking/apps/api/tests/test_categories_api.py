@@ -48,6 +48,26 @@ class TestCategoriesAPI:
         assert response.status_code == 201
         assert response.json()["color"] == "#78ABA8"
 
+    def test_create_accepts_any_hex_color(self, auth_client_a):
+        response = auth_client_a.post(
+            URL,
+            {"name": "Custom", "color": "#3d8b6e"},
+            format="json",
+        )
+        assert response.status_code == 201
+        assert response.json()["name"] == "Custom"
+        assert response.json()["color"] == "#3D8B6E"
+
+    def test_create_rejects_invalid_and_blocked_colors(self, auth_client_a):
+        bad = auth_client_a.post(
+            URL, {"name": "Nope", "color": "orange"}, format="json"
+        )
+        assert bad.status_code == 400
+        blocked = auth_client_a.post(
+            URL, {"name": "Nope", "color": "#9747FF"}, format="json"
+        )
+        assert blocked.status_code == 400
+
     def test_patch_rename(self, auth_client_a, user_a):
         cat = Category.objects.create(user=user_a, name="Old", color="#EF9C66")
         response = auth_client_a.patch(

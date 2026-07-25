@@ -107,7 +107,8 @@ export function useDeleteNote() {
 export function useCreateCategory() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (name: string) => api.createCategory(name),
+    mutationFn: (payload: { name: string; color?: string }) =>
+      api.createCategory(payload),
     onSuccess: () => {
       void queryClient.invalidateQueries({ queryKey: queryKeys.categories });
     },

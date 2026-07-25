@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useId, useRef, useState, type FormEvent } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 
-import { useCreateCategory } from "@/lib/hooks";
+import { CategoryCreateForm } from "@/components/notes/CategoryCreateForm";
 import type { Category } from "@/lib/types";
 
 import styles from "./CategoryPicker.module.css";
@@ -24,9 +24,6 @@ export function CategoryPicker({
   const rootRef = useRef<HTMLDivElement>(null);
   const [open, setOpen] = useState(false);
   const [creating, setCreating] = useState(false);
-  const [newName, setNewName] = useState("");
-  const [error, setError] = useState<string | null>(null);
-  const createCategory = useCreateCategory();
 
   const selected = categories.find((c) => c.id === value) ?? null;
 
@@ -37,7 +34,6 @@ export function CategoryPicker({
       if (!rootRef.current?.contains(event.target as Node)) {
         setOpen(false);
         setCreating(false);
-        setError(null);
       }
     }
 
@@ -45,7 +41,6 @@ export function CategoryPicker({
       if (event.key === "Escape") {
         setOpen(false);
         setCreating(false);
-        setError(null);
       }
     }
 
@@ -56,25 +51,6 @@ export function CategoryPicker({
       document.removeEventListener("keydown", onKey);
     };
   }, [open]);
-
-  async function onCreate(event: FormEvent) {
-    event.preventDefault();
-    const name = newName.trim();
-    if (!name) {
-      setError("Name is required");
-      return;
-    }
-    setError(null);
-    try {
-      const category = await createCategory.mutateAsync(name);
-      onChange(category.id);
-      setNewName("");
-      setCreating(false);
-      setOpen(false);
-    } catch {
-      setError("Couldn’t create category");
-    }
-  }
 
   return (
     <div className={styles.root} ref={rootRef}>
@@ -146,28 +122,14 @@ export function CategoryPicker({
           ))}
 
           {creating ? (
-            <form className={styles.createForm} onSubmit={onCreate}>
-              <label className="visually-hidden" htmlFor={`${listId}-new`}>
-                New category name
-              </label>
-              <input
-                id={`${listId}-new`}
-                className={styles.createInput}
-                value={newName}
-                onChange={(e) => setNewName(e.target.value)}
-                placeholder="Category name"
-                autoFocus
-                disabled={createCategory.isPending}
-              />
-              <button
-                type="submit"
-                className={styles.createSubmit}
-                disabled={createCategory.isPending}
-              >
-                Add
-              </button>
-              {error ? <p className={styles.error}>{error}</p> : null}
-            </form>
+            <CategoryCreateForm
+              onCreated={(category) => {
+                onChange(category.id);
+                setCreating(false);
+                setOpen(false);
+              }}
+              onCancel={() => setCreating(false)}
+            />
           ) : (
             <button
               type="button"

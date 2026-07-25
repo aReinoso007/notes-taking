@@ -9,6 +9,7 @@ import { formatLastEdited } from "@/lib/dates";
 import {
   buildNotePayload,
   notesListHref,
+  replaceNoteUrl,
   shouldCreateOnChange,
 } from "@/lib/note-editor";
 import {
@@ -125,7 +126,9 @@ export function NoteEditor({
       noteIdRef.current = created.id;
       setUpdatedAt(created.updated_at);
       setSaveError(null);
-      router.replace(`/notes/${created.id}`);
+      replaceNoteUrl(created.id);
+      // Persist anything typed while the create request was in flight.
+      scheduleSave();
     } catch {
       setSaveError("Couldn’t create note");
     } finally {

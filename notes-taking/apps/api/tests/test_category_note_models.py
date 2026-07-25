@@ -23,7 +23,16 @@ def user_b(db):
 @pytest.mark.django_db
 class TestCategoryModel:
     def test_palette_has_exactly_four_colours(self):
-        assert CATEGORY_PALETTE == ("#EF9C66", "#FCDC94", "#C8CFA0", "#78ABA8")
+        assert CATEGORY_PALETTE == (
+            "#EF9C66",
+            "#FCDC94",
+            "#C8CFA0",
+            "#78ABA8",
+            "#E8B4B8",
+            "#D4B483",
+            "#9DBFBB",
+            "#E9C46A",
+        )
 
     def test_unique_name_per_user(self, user_a):
         Category.objects.create(user=user_a, name="School", color="#EF9C66")

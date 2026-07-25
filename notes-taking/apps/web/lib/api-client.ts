@@ -70,17 +70,20 @@ export const api = {
     return request<Category[]>("/api/categories");
   },
 
-  createCategory(name: string) {
+  createCategory(payload: { name: string; color?: string }) {
     return request<Category>("/api/categories", {
       method: "POST",
-      body: JSON.stringify({ name }),
+      body: JSON.stringify(payload),
     });
   },
 
-  updateCategory(id: number, name: string) {
+  updateCategory(
+    id: number,
+    payload: { name?: string; color?: string },
+  ) {
     return request<Category>(`/api/categories/${id}`, {
       method: "PATCH",
-      body: JSON.stringify({ name }),
+      body: JSON.stringify(payload),
     });
   },
 

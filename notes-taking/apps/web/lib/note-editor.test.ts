@@ -3,6 +3,7 @@ import { describe, expect, it } from "vitest";
 import {
   buildNotePayload,
   notesListHref,
+  replaceNoteUrl,
   shouldCreateOnChange,
 } from "./note-editor";
 
@@ -43,5 +44,12 @@ describe("notesListHref", () => {
 
   it("keeps category query when set", () => {
     expect(notesListHref(7)).toBe("/notes?category=7");
+  });
+});
+
+describe("replaceNoteUrl", () => {
+  it("updates the path without a full navigation", () => {
+    replaceNoteUrl(42);
+    expect(window.location.pathname).toBe("/notes/42");
   });
 });

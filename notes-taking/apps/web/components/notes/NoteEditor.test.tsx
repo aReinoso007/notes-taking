@@ -113,7 +113,9 @@ describe("NoteEditor", () => {
       content: "",
       category: 1,
     });
-    expect(replace).toHaveBeenCalledWith("/notes/99");
+    // Soft URL update — must not router.replace (that remounts and steals focus).
+    expect(replace).not.toHaveBeenCalled();
+    expect(window.location.pathname).toBe("/notes/99");
   });
 
   it("debounces autosave to a single PATCH after quiet period", async () => {

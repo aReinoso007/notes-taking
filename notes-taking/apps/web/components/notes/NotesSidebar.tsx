@@ -1,5 +1,10 @@
-import Link from "next/link";
+"use client";
 
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+
+import { CategoryCreateForm } from "@/components/notes/CategoryCreateForm";
 import type { Category } from "@/lib/types";
 import { notesPathForCategory } from "@/lib/notes-filter";
 
@@ -14,6 +19,9 @@ export function NotesSidebar({
   categories,
   activeCategoryId,
 }: NotesSidebarProps) {
+  const router = useRouter();
+  const [creating, setCreating] = useState(false);
+
   return (
     <aside className={styles.sidebar} aria-label="Categories">
       <Link
@@ -52,6 +60,25 @@ export function NotesSidebar({
           </Link>
         ))}
       </nav>
+
+      {creating ? (
+        <CategoryCreateForm
+          className={styles.createForm}
+          onCreated={(category) => {
+            setCreating(false);
+            router.push(notesPathForCategory(category.id));
+          }}
+          onCancel={() => setCreating(false)}
+        />
+      ) : (
+        <button
+          type="button"
+          className={styles.createBtn}
+          onClick={() => setCreating(true)}
+        >
+          + New category
+        </button>
+      )}
     </aside>
   );
 }
