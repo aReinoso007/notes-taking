@@ -312,7 +312,7 @@ notes-taking/                   # monorepo root (this folder)
 - [x] Step 6 — Auth screens (`AuthLayout`, pill button, errors, reveal toggle)
 - [x] Step 7 — Notes grid, cards, sidebar, category filter, empty states
 - [x] Step 8 — Note page: inline edit, markdown + preview, autosave, category dropdown, delete
-- [ ] Step 9
+- [x] Step 9 — README, seed script for the demo, demo video
 
 ---
 
