@@ -51,13 +51,19 @@ export function NotesPage() {
   return (
     <div className={styles.shell}>
       <div className={styles.actions}>
-        <PillButton
-          type="button"
-          className={styles.newNoteBtn}
-          onClick={() => router.push("/notes/new")}
-        >
-          + New Note
-        </PillButton>
+          <PillButton
+            type="button"
+            className={styles.newNoteBtn}
+            onClick={() => {
+              const href =
+                activeCategoryId !== undefined
+                  ? `/notes/new?category=${activeCategoryId}`
+                  : "/notes/new";
+              router.push(href);
+            }}
+          >
+            + New Note
+          </PillButton>
         <button
           type="button"
           className={styles.logout}

@@ -1,12 +1,28 @@
+"use client";
+
+import { useSearchParams } from "next/navigation";
+import { Suspense } from "react";
+
+import { NoteEditor } from "@/components/notes/NoteEditor";
+import { parseCategoryFilter } from "@/lib/notes-filter";
+
+function NewNotePageInner() {
+  const searchParams = useSearchParams();
+  const categoryId = parseCategoryFilter(searchParams.get("category"));
+
+  return (
+    <NoteEditor
+      mode="new"
+      initialCategoryId={categoryId ?? null}
+      returnCategoryId={categoryId ?? null}
+    />
+  );
+}
+
 export default function NewNotePage() {
   return (
-    <main style={{ padding: "2rem" }}>
-      <h1 style={{ color: "var(--heading)", fontFamily: "var(--font-display), cursive" }}>
-        New Note
-      </h1>
-      <p style={{ color: "var(--ink)" }}>
-        Draft editor lands in Step 8 — create-on-first-keystroke is next.
-      </p>
-    </main>
+    <Suspense fallback={<div style={{ padding: "2rem" }}>Loading…</div>}>
+      <NewNotePageInner />
+    </Suspense>
   );
 }

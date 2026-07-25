@@ -1,8 +1,9 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { api } from "./api-client";
+import type { Note } from "./types";
 
 export const queryKeys = {
   me: ["me"] as const,
@@ -30,7 +31,8 @@ export function useCategories() {
 export function useNotes(category?: number | "null") {
   return useQuery({
     queryKey: queryKeys.notes(category),
-    queryFn: () => api.listNotes(category !== undefined ? { category } : undefined),
+    queryFn: () =>
+      api.listNotes(category !== undefined ? { category } : undefined),
   });
 }
 
@@ -41,3 +43,67 @@ export function useNote(id: number, enabled = true) {
     enabled,
   });
 }
+
+function invalidateNoteLists(queryClient: ReturnType<typeof useQueryClient>) {
+  return queryClient.invalidateQueries({ queryKey: ["notes"] });
+}
+
+export function useCreateNote() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (payload: {
+      title?: string;
+      content?: string;
+      category?: number | null;
+    }) => api.createNote(payload),
+    onSuccess: (note) => {
+      queryClient.setQueryData(queryKeys.note(note.id), note);
+      void invalidateNoteLists(queryClient);
+      void queryClient.invalidateQueries({ queryKey: queryKeys.categories });
+    },
+  });
+}
+
+export function useUpdateNote() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({
+      id,
+      ...payload
+    }: {
+      id: number;
+      title?: string;
+      content?: string;
+      category?: number | null;
+    }) => api.updateNote(id, payload),
+    onSuccess: (note) => {
+      queryClient.setQueryData(queryKeys.note(note.id), note);
+      void invalidateNoteLists(queryClient);
+      void queryClient.invalidateQueries({ queryKey: queryKeys.categories });
+    },
+  });
+}
+
+export function useDeleteNote() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (id: number) => api.deleteNote(id),
+    onSuccess: (_data, id) => {
+      queryClient.removeQueries({ queryKey: queryKeys.note(id) });
+      void invalidateNoteLists(queryClient);
+      void queryClient.invalidateQueries({ queryKey: queryKeys.categories });
+    },
+  });
+}
+
+export function useCreateCategory() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (name: string) => api.createCategory(name),
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: queryKeys.categories });
+    },
+  });
+}
+
+export type { Note };
