@@ -1,6 +1,17 @@
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { cleanup, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import type { ReactNode } from "react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+
+function renderWithQuery(ui: ReactNode) {
+  const client = new QueryClient({
+    defaultOptions: { queries: { retry: false }, mutations: { retry: false } },
+  });
+  return render(
+    <QueryClientProvider client={client}>{ui}</QueryClientProvider>,
+  );
+}
 
 const replace = vi.fn();
 const refresh = vi.fn();
@@ -98,7 +109,7 @@ describe("AuthForm validation and submit", () => {
 
   it("shows validation errors and does not submit", async () => {
     const user = userEvent.setup();
-    render(<AuthForm mode="login" />);
+    renderWithQuery(<AuthForm mode="login" />);
 
     await user.click(screen.getByTestId("auth-submit"));
 
@@ -109,7 +120,7 @@ describe("AuthForm validation and submit", () => {
 
   it("rejects malformed email", async () => {
     const user = userEvent.setup();
-    render(<AuthForm mode="login" />);
+    renderWithQuery(<AuthForm mode="login" />);
 
     await user.type(screen.getByLabelText("Email"), "not-an-email");
     await user.type(screen.getByLabelText("Password"), "securepass1");
@@ -122,7 +133,7 @@ describe("AuthForm validation and submit", () => {
   it("submits login and redirects to /notes", async () => {
     const user = userEvent.setup();
     login.mockResolvedValue({ user: { id: 1, email: "a@example.com" } });
-    render(<AuthForm mode="login" />);
+    renderWithQuery(<AuthForm mode="login" />);
 
     await user.type(screen.getByLabelText("Email"), "a@example.com");
     await user.type(screen.getByLabelText("Password"), "securepass1");
@@ -137,7 +148,7 @@ describe("AuthForm validation and submit", () => {
     signup.mockRejectedValue(
       new ApiError(400, { email: ["A user with this email already exists."] }),
     );
-    render(<AuthForm mode="signup" />);
+    renderWithQuery(<AuthForm mode="signup" />);
 
     await user.type(screen.getByLabelText("Email"), "dup@example.com");
     await user.type(screen.getByLabelText("Password"), "securepass1");

@@ -1,5 +1,6 @@
 "use client";
 
+import { useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { useState, type FormEvent } from "react";
 
@@ -7,6 +8,7 @@ import { PillButton } from "@/components/PillButton";
 import { PasswordField } from "@/components/auth/PasswordField";
 import { TextField } from "@/components/auth/TextField";
 import { ApiError, api } from "@/lib/api-client";
+import { clearSessionCache } from "@/lib/session-cache";
 
 import styles from "./AuthForm.module.css";
 
@@ -62,6 +64,7 @@ function mapApiErrors(body: unknown): FieldErrors {
 
 export function AuthForm({ mode }: AuthFormProps) {
   const router = useRouter();
+  const queryClient = useQueryClient();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState<FieldErrors>({});
@@ -80,6 +83,8 @@ export function AuthForm({ mode }: AuthFormProps) {
       } else {
         await api.signup(email.trim(), password);
       }
+      // Drop any prior session's cached notes/categories before the notes page mounts.
+      clearSessionCache(queryClient);
       router.replace("/notes");
       router.refresh();
     } catch (err) {

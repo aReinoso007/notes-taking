@@ -1,5 +1,6 @@
 "use client";
 
+import { useQueryClient } from "@tanstack/react-query";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -15,6 +16,7 @@ import {
   parseCategoryFilter,
   parseSearchQuery,
 } from "@/lib/notes-filter";
+import { clearSessionCache } from "@/lib/session-cache";
 import { useDebouncedCallback } from "@/lib/useDebouncedCallback";
 
 import styles from "./NotesPage.module.css";
@@ -30,6 +32,7 @@ function syncNotesUrl(categoryId: number | undefined, q: string) {
 
 export function NotesPage() {
   const router = useRouter();
+  const queryClient = useQueryClient();
   const searchParams = useSearchParams();
   const activeCategoryId = parseCategoryFilter(searchParams.get("category"));
   const urlQuery = parseSearchQuery(searchParams.get("q"));
@@ -82,6 +85,7 @@ export function NotesPage() {
 
   async function onLogout() {
     await api.logout().catch(() => undefined);
+    clearSessionCache(queryClient);
     router.replace("/login");
     router.refresh();
   }
@@ -134,14 +138,6 @@ export function NotesPage() {
         >
           + New Note
         </PillButton>
-        <button
-          type="button"
-          className={styles.logout}
-          onClick={onLogout}
-          aria-label="Log out"
-        >
-          ×
-        </button>
       </div>
 
       <div className={styles.body}>
@@ -150,6 +146,8 @@ export function NotesPage() {
             categories={categoryList}
             activeCategoryId={activeCategoryId}
             searchQuery={committedQuery}
+            userEmail={me.data?.user.email}
+            onLogout={onLogout}
           />
         </div>
 
@@ -223,6 +221,8 @@ export function NotesPage() {
               categories={categoryList}
               activeCategoryId={activeCategoryId}
               searchQuery={committedQuery}
+              userEmail={me.data?.user.email}
+              onLogout={onLogout}
               onNavigate={() => setDrawerOpen(false)}
               className={styles.drawerSidebar}
             />
