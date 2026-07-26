@@ -6,67 +6,65 @@ import { useState } from "react";
 
 import { CategoryCreateForm } from "@/components/notes/CategoryCreateForm";
 import type { Category } from "@/lib/types";
-import { notesPathForCategory } from "@/lib/notes-filter";
+import { notesListPath } from "@/lib/notes-filter";
 
 import styles from "./NotesSidebar.module.css";
 
 type NotesSidebarProps = {
   categories: Category[];
   activeCategoryId?: number;
+  /** Preserve search when switching folders. */
+  searchQuery?: string;
+  /** Called after a category (or All) is chosen — used to close the mobile drawer. */
+  onNavigate?: () => void;
+  className?: string;
 };
 
 export function NotesSidebar({
   categories,
   activeCategoryId,
+  searchQuery = "",
+  onNavigate,
+  className,
 }: NotesSidebarProps) {
   const router = useRouter();
   const [creating, setCreating] = useState(false);
 
+  function pathFor(categoryId?: number) {
+    return notesListPath({
+      categoryId,
+      q: searchQuery || undefined,
+    });
+  }
+
   return (
-    <aside className={styles.sidebar} aria-label="Categories">
+    <aside
+      className={[styles.sidebar, className].filter(Boolean).join(" ")}
+      aria-label="Categories"
+    >
       <Link
-        href={notesPathForCategory()}
+        href={pathFor()}
         className={[
           styles.heading,
           activeCategoryId === undefined ? styles.headingActive : "",
         ]
           .filter(Boolean)
           .join(" ")}
+        onClick={() => onNavigate?.()}
       >
         All Categories
         <span className={styles.chevron} aria-hidden="true">
           ▾
         </span>
       </Link>
-      <nav className={styles.nav}>
-        {categories.map((category) => (
-          <Link
-            key={category.id}
-            href={notesPathForCategory(category.id)}
-            className={[
-              styles.item,
-              activeCategoryId === category.id ? styles.active : "",
-            ]
-              .filter(Boolean)
-              .join(" ")}
-          >
-            <span
-              className={styles.swatch}
-              style={{ background: category.color }}
-              aria-hidden="true"
-            />
-            <span className={styles.name}>{category.name}</span>
-            <span className={styles.count}>{category.note_count}</span>
-          </Link>
-        ))}
-      </nav>
 
       {creating ? (
         <CategoryCreateForm
           className={styles.createForm}
           onCreated={(category) => {
             setCreating(false);
-            router.push(notesPathForCategory(category.id));
+            onNavigate?.();
+            router.push(pathFor(category.id));
           }}
           onCancel={() => setCreating(false)}
         />
@@ -79,6 +77,30 @@ export function NotesSidebar({
           + New category
         </button>
       )}
+
+      <nav className={styles.nav}>
+        {categories.map((category) => (
+          <Link
+            key={category.id}
+            href={pathFor(category.id)}
+            className={[
+              styles.item,
+              activeCategoryId === category.id ? styles.active : "",
+            ]
+              .filter(Boolean)
+              .join(" ")}
+            onClick={() => onNavigate?.()}
+          >
+            <span
+              className={styles.swatch}
+              style={{ background: category.color }}
+              aria-hidden="true"
+            />
+            <span className={styles.name}>{category.name}</span>
+            <span className={styles.count}>{category.note_count}</span>
+          </Link>
+        ))}
+      </nav>
     </aside>
   );
 }

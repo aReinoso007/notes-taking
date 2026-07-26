@@ -1,3 +1,4 @@
+from django.db.models import Q
 from rest_framework import viewsets
 from rest_framework.pagination import CursorPagination
 from rest_framework.permissions import IsAuthenticated
@@ -29,6 +30,10 @@ class NoteViewSet(viewsets.ModelViewSet):
                 qs = qs.filter(category__isnull=True)
             else:
                 qs = qs.filter(category_id=category_id)
+
+        q = (self.request.query_params.get("q") or "").strip()
+        if q:
+            qs = qs.filter(Q(title__icontains=q) | Q(content__icontains=q))
         return qs
 
     def get_serializer_class(self):

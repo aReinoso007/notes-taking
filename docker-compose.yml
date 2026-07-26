@@ -1,3 +1,8 @@
+# Stable project name — keeps Postgres volume across folder moves/renames.
+# (Without this, Compose derives the name from the directory, e.g. turboai vs
+# notes-taking, and you silently get a fresh empty database.)
+name: notes-taking
+
 services:
   db:
     image: postgres:16-alpine
@@ -53,4 +58,6 @@ services:
 
 volumes:
   postgres_data:
+    name: notes-taking_postgres_data
   web_node_modules:
+    name: notes-taking_web_node_modules

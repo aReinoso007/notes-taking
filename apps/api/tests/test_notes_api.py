@@ -93,3 +93,24 @@ class TestNotesAPI:
         assert first.status_code == 200
         assert len(first.json()["results"]) == 20
         assert first.json()["next"] is not None
+
+    def test_search_matches_title_and_content(self, auth_client_a, user_a, user_b):
+        cat = Category.objects.create(user=user_a, name="School", color="#FCDC94")
+        Note.objects.create(user=user_a, title="Banana bread", content="recipe", category=cat)
+        Note.objects.create(user=user_a, title="Groceries", content="buy bananas", category=cat)
+        Note.objects.create(user=user_a, title="Unrelated", content="milk")
+        Note.objects.create(user=user_b, title="Banana secret", content="private")
+
+        response = auth_client_a.get(URL, {"q": "banana"})
+        assert response.status_code == 200
+        titles = {n["title"] for n in response.json()["results"]}
+        assert titles == {"Banana bread", "Groceries"}
+
+        filtered = auth_client_a.get(URL, {"q": "banana", "category": cat.id})
+        assert {n["title"] for n in filtered.json()["results"]} == {
+            "Banana bread",
+            "Groceries",
+        }
+
+        empty = auth_client_a.get(URL, {"q": "banana", "category": "null"})
+        assert empty.json()["results"] == []

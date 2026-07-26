@@ -13,7 +13,8 @@ import type { Note } from "./types";
 export const queryKeys = {
   me: ["me"] as const,
   categories: ["categories"] as const,
-  notes: (category?: number | "null") => ["notes", category ?? "all"] as const,
+  notes: (category?: number | "null", q?: string) =>
+    ["notes", category ?? "all", q?.trim() || ""] as const,
   note: (id: number) => ["note", id] as const,
 };
 
@@ -33,12 +34,16 @@ export function useCategories() {
   });
 }
 
-export function useNotes(category?: number | "null") {
+export function useNotes(category?: number | "null", q?: string) {
+  const trimmed = q?.trim() || undefined;
   return useQuery({
-    queryKey: queryKeys.notes(category),
+    queryKey: queryKeys.notes(category, trimmed),
     queryFn: () =>
-      api.listNotes(category !== undefined ? { category } : undefined),
-    // Keep the previous grid on screen while the next category loads —
+      api.listNotes({
+        ...(category !== undefined ? { category } : {}),
+        ...(trimmed ? { q: trimmed } : {}),
+      }),
+    // Keep the previous grid on screen while the next category/search loads —
     // avoids a full-page "Loading notes…" flash / layout jump.
     placeholderData: keepPreviousData,
   });

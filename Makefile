@@ -11,6 +11,8 @@ up:
 up-d:
 	docker compose up --build -d
 
+# Stops containers only — Postgres data is kept (never use `down -v` unless you
+# intend to wipe the database).
 down:
 	docker compose down
 
@@ -25,6 +27,7 @@ seed:
 
 # Wipe stale web node_modules volume (fixes "Can't resolve 'react-markdown'" etc.)
 # then bring the full stack back up in the foreground.
+# Does NOT touch the Postgres volume.
 reset:
 	docker compose down
 	-docker volume rm notes-taking_web_node_modules

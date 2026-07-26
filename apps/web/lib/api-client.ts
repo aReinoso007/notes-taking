@@ -91,10 +91,18 @@ export const api = {
     return request<void>(`/api/categories/${id}`, { method: "DELETE" });
   },
 
-  listNotes(params?: { category?: number | "null"; cursor?: string }) {
+  listNotes(params?: {
+    category?: number | "null";
+    q?: string;
+    cursor?: string;
+  }) {
     const qs = new URLSearchParams();
     if (params?.category !== undefined) {
       qs.set("category", String(params.category));
+    }
+    const trimmed = params?.q?.trim();
+    if (trimmed) {
+      qs.set("q", trimmed);
     }
     if (params?.cursor) {
       qs.set("cursor", params.cursor);

@@ -33,10 +33,15 @@ make up
 |---|---|
 | `make up` | Build and run everything in the foreground (Ctrl+C to stop) |
 | `make up-d` | Same, detached |
-| `make down` | Stop containers |
+| `make down` | Stop containers (**keeps** the Postgres database) |
 | `make seed` | Load demo user + sample notes |
-| `make reset` | Wipe stale web `node_modules` volume and restart (use if the browser shows missing modules) |
+| `make reset` | Wipe stale web `node_modules` volume and restart (does **not** wipe the DB) |
 | `make logs` | Tail Compose logs |
+
+Dev data lives in a **named Docker volume** (`notes-taking_postgres_data`) with a
+fixed Compose project name, so restarting the stack or moving the repo folder
+does not create a fresh empty database. Avoid `docker compose down -v` unless
+you intentionally want to wipe local data.
 
 The web container re-runs `npm install` on every start, so new deps like `react-markdown` are picked up automatically.
 

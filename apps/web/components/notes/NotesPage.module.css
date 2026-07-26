@@ -45,6 +45,10 @@
   padding-top: 3.25rem;
 }
 
+.desktopSidebar {
+  flex-shrink: 0;
+}
+
 .main {
   flex: 1;
   min-width: 0;
@@ -53,10 +57,28 @@
 
 .mainEmpty {
   display: flex;
-  align-items: center;
-  justify-content: center;
+  flex-direction: column;
   min-height: calc(100dvh - 6rem);
   padding-top: 0;
+}
+
+.mainEmpty > :last-child {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.toolbar {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 0.25rem;
+}
+
+.foldersBtn {
+  display: none;
 }
 
 .loading {
@@ -64,6 +86,10 @@
   display: grid;
   place-items: center;
   color: var(--ink);
+}
+
+.drawerRoot {
+  display: none;
 }
 
 @media (max-width: 820px) {
@@ -74,16 +100,135 @@
   .actions {
     position: static;
     justify-content: flex-end;
-    margin-bottom: 1.25rem;
+    margin-bottom: 0.75rem;
   }
 
   .body {
     flex-direction: column;
-    gap: 1.5rem;
+    gap: 0;
     min-height: auto;
+    padding-top: 0;
+  }
+
+  .desktopSidebar {
+    display: none;
   }
 
   .mainEmpty {
     min-height: 50vh;
+  }
+
+  .foldersBtn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    max-width: 100%;
+    margin: 0 0 0.15rem;
+    padding: 0.2rem 0;
+    border: 0;
+    background: transparent;
+    color: var(--heading);
+    font: inherit;
+    font-size: 1.05rem;
+    font-weight: 800;
+    text-align: left;
+    cursor: pointer;
+  }
+
+  .foldersIcon {
+    font-size: 1rem;
+    line-height: 1;
+    opacity: 0.85;
+  }
+
+  .foldersLabel {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .drawerRoot {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 40;
+  }
+
+  .drawerBackdrop {
+    position: absolute;
+    inset: 0;
+    border: 0;
+    padding: 0;
+    background: color-mix(in srgb, var(--ink) 35%, transparent);
+    cursor: pointer;
+  }
+
+  .drawerPanel {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: min(85vw, 320px);
+    padding: 1.15rem 1.1rem 1.5rem;
+    background: var(--paper);
+    box-shadow: 4px 0 24px rgb(0 0 0 / 0.18);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    animation: drawerIn 180ms ease-out;
+  }
+
+  .drawerHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    margin-bottom: 0.85rem;
+  }
+
+  .drawerTitle {
+    margin: 0;
+    color: var(--ink);
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    opacity: 0.8;
+  }
+
+  .drawerClose {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    border: 0;
+    background: transparent;
+    color: var(--ink);
+    font-size: 1.5rem;
+    line-height: 1;
+    cursor: pointer;
+  }
+
+  .drawerClose:hover {
+    color: var(--heading);
+  }
+
+  .drawerSidebar {
+    width: 100%;
+  }
+}
+
+@keyframes drawerIn {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .drawerPanel {
+    animation: none;
   }
 }
