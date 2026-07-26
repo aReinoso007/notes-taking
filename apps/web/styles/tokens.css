@@ -1,0 +1,30 @@
+:root {
+  /* Category palette — must match CATEGORY_PALETTE in Python */
+  --cat-apricot: #ef9c66;
+  --cat-butter: #fcdc94;
+  --cat-sage: #c8cfa0;
+  --cat-teal: #78aba8;
+  --cat-rose: #e8b4b8;
+  --cat-caramel: #d4b483;
+  --cat-mist: #9dbfbb;
+  --cat-gold: #e9c46a;
+
+  /* Surface / ink / heading */
+  --paper: #faf1e3;
+  --ink: #957139;
+  --heading: #88642a;
+
+  /* Uncategorised notes */
+  --cat-none: color-mix(in srgb, var(--ink) 22%, var(--paper));
+
+  /* Geometry */
+  --r-input: 6px;
+  --r-panel: 8px;
+  --r-card: 10px;
+  --r-pill: 999px;
+
+  --border-card: 3px;
+  --border-hair: 1px;
+
+  --shadow-card: 1px 1px 2px rgb(0 0 0 / 0.25);
+}
