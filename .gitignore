@@ -25,5 +25,15 @@ Thumbs.db
 .idea/
 .vscode/
 
+# Video files (too large for GitHub — host elsewhere, link from README)
+*.mov
+*.mp4
+*.mkv
+*.webm
+*.flv
+*.wmv
+*.m4v
+*.m4a
+
 # Local design references (not part of the app)
 design/

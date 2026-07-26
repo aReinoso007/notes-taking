@@ -189,19 +189,15 @@ code generator:
 
 ## Demo video
 
-Record a short walkthrough (≈2–3 minutes) and place it at
+Record a short walkthrough (≈3 minutes) and place it at
 [`docs/demo.mp4`](./docs/demo.mp4) (or link it from this section if hosted
-elsewhere). Suggested script:
+elsewhere).
 
-1. `docker compose up --build` → open the web app  
-2. `seed_demo` → log in as the demo user  
-3. Browse the grid / filter a category / show empty-ish moments if useful  
-4. Open a note → edit title/body → show autosave + markdown preview  
-5. Change category / create a category → delete a note with confirm  
-6. New Note → type once → URL becomes `/notes/{id}`  
+**Read-aloud script:** [`docs/DEMO.md`](./docs/DEMO.md) — architecture, product
+choices, and a continuous walkthrough meant to be spoken while recording.
 
 If `docs/demo.mp4` is missing from the clone, ask the author for the recording
-link; the seed script alone is enough to reproduce the same UI state.
+link; `make seed` alone is enough to reproduce the same UI state.
 
 ---
 
